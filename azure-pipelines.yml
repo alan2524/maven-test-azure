@@ -2,15 +2,15 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
+  demands: # This explicitly prevents parallel jobs
+    - agent.singlejob
 
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'JavaHelloWorld/pom.xml'  # Correct subfolder path
+    mavenPomFile: 'JavaHelloWorld/pom.xml'
     goals: 'clean install'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    publishJUnitResults: false # Disable until build works
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'  # Matching your POM's Java version
-    mavenVersionOption: 'Default'
+    jdkVersionOption: '1.8'
