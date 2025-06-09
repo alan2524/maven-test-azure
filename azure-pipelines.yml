@@ -1,33 +1,24 @@
-trigger:
-- main
-
-pool:
-  vmImage: 'ubuntu-latest'
-  demands: # This explicitly prevents parallel jobs
-    - agent.singlejob
-
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'JavaHelloWorld/pom.xml'
-    goals: 'clean install'
-    publishJUnitResults: false # Disable until build works
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
-  demands: # This explicitly prevents parallel jobs
-    - agent.singlejob
+  vmImage: ubuntu-latest
 
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'JavaHelloWorld/pom.xml'
-    goals: 'clean install'
-    publishJUnitResults: false # Disable until build works
+    mavenPomFile: './JavaHelloWorld/pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
+    jdkVersionOption: '1.21'
+    mavenVersionOption: 'Default'
+    mavenOptions: '-Xmx3072m'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
